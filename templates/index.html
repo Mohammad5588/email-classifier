@@ -2,36 +2,140 @@
 <html>
 
 <head>
-    <title>
-        Email Spam Classifier
-    </title>
+    <title>Email Spam Classifier</title>
     <style>
         body {
-            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+        }
+
+        .top-left,
+        .top-right,
+        .bottom-left,
+        .bottom-right {
+            padding: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .top-right::before,
+        .bottom-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -2px;
+            height: 100%;
+            border-left: 2px solid black;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            height: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            margin-bottom: 10px;
+            font-size: 16px;
+            resize: none;
         }
 
         button {
-            color: aliceblue;
-            background-color: blue;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            margin-left: 10px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 24px;
+            margin-bottom: 0;
+        }
+
+        .spam {
+            color: red;
+        }
+
+        .not-spam {
+            color: #00ff4c;
+        }
+
+        .example {
+            width: 100%;
+            max-width: 300px; /* Adjust max-width as needed */
         }
     </style>
 </head>
-<body>
-    <h1>Email Spam Classifier</h1>
-    <div>
-        <form method="POST" action="/predict">
-            <textarea rows="12" cols="60" name="content" placeholder="Enter your email here"
-            autocomplete="off">{{ email }}</textarea>
-            <div>
-                <button type="submit">Submit</button>
-                <a href="/">Reset</a>
-            </div>
-        </form>
 
-        {% if prediction==1 %}
-            <h2 style="color:red":>SPAM</h2>
-        {% elif prediction==-1 %}
-            <h2 style="color:rgb(0, 255, 76)":>NOT A SPAM</h2>
-        {% endif %}    
+<body>
+    <div class="container">
+        <div class="top-right">
+            <div class="example">
+                <h2>Example Spam Mail:</h2>
+                <p>"I love tax season" said no one ever. So here are some hacks to make it more bearable:
+                    Save up to ₹46 K in taxes by investing ₹1.5 L in ELSS Mutual Funds
+                    Save up to ₹10 K in taxes by harvesting ₹1 L in long-term capital gains. Check recommendations
+                    Unfortunately, complaining about taxes is not tax deductible
+                </p>
+            </div>
+        </div>
+        <div class="top-left">
+            <h1>Email Spam Classifier</h1>
+            <form method="POST" action="/predict">
+                <textarea rows="12" cols="60" name="content" placeholder="Enter your email here"
+                    autocomplete="off">{{ email }}</textarea>
+                <div>
+                    <button type="submit">Submit</button>
+                    <a href="/">Reset</a>
+                </div>
+            </form>
+        </div>
+        <div class="bottom-left">
+            <div class="example">
+                <h2>Example Non Spam Mail:</h2>
+                <p>We have some changes in our regular class schedule for this week. Instead of the usual "Machine Learning Foundations" and "Data Science Career Readiness Training" on Wednesday, 14th June, we are rescheduling the class to Thursday, 15th June.
+                    Instructor, will be conducting an exclusive workshop titled "Machine Learning Model Deployment" on the 14th of June. The workshop will be held from 7:00 PM to 8:30 PM IST. We strongly recommend all students to attend the workshop.
+                    You can join the workshop via this link.
+                    Please reach out to us via Discussions for any queries. We appreciate your understanding and cooperation in this matter, and we look forward to seeing you at the workshop and the rescheduled class.
+                </p>
+            </div>
+        </div>
+        <div class="bottom-right">
+            {% if prediction==1 %}
+            <h2 class="spam">SPAM</h2>
+            {% elif prediction==-1 %}
+            <h2 class="not-spam">NOT A SPAM</h2>
+            {% endif %}
+        </div>
     </div>
 </body>
+
+</html>
